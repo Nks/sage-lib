@@ -30,8 +30,9 @@
   "require": {
     "php": "^7.4",
     "composer/installers": "~2.0",
-    "illuminate/view": "~7.0",
-    "illuminate/config": "~7.0",
+    "illuminate/view": "^8.0",
+    "illuminate/config": "^8.0",
+    "illuminate/support": "^8.0",
     "ext-json": "*"
   },
   "require-dev": {
