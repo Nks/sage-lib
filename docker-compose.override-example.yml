@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      args:
+        HOST_TYPE: 'default' #use "m1" if necessary
+    volumes:
+      - sage-lib:/app
+
+volumes:
+  sage-lib:
+    external: true

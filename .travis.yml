@@ -3,9 +3,6 @@ sudo: false
 dist: bionic
 php:
   - 7.4
-  - 7.3
-  - 7.2
-  - nightly
 
 matrix:
   fast_finish: true

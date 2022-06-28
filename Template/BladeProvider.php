@@ -14,8 +14,8 @@ use Illuminate\View\ViewServiceProvider;
 class BladeProvider extends ViewServiceProvider
 {
     /**
-     * @param ContainerContract $container
-     * @param array             $config
+     * @param  ContainerContract  $container
+     * @param  array  $config
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct(ContainerContract $container = null, $config = [])
@@ -65,6 +65,7 @@ class BladeProvider extends ViewServiceProvider
             $namespaces = $config['view.namespaces'];
             $finder = new FileViewFinder($app['files'], $paths);
             array_map([$finder, 'addNamespace'], array_keys($namespaces), $namespaces);
+
             return $finder;
         }, true);
     }
