@@ -1,11 +1,8 @@
 language: php
 sudo: false
-dist: trusty
+dist: bionic
 php:
-  - 7.3
-  - 7.2
-  - 7.1
-  - nightly
+  - 7.4
 
 matrix:
   fast_finish: true

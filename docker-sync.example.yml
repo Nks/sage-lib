@@ -1,0 +1,12 @@
+version: "2"
+syncs:
+  sage-lib:
+    src: "./"
+    sync_strategy: 'native_osx'
+    #native_osx_image: eugenmayer/unison:2.51.3-4.12.0-ARM64
+    sync_userid: 1000
+    sync_excludes: [ 'bower_components', 'node_modules', '.git', '.DS_Store' ]
+    sync_args:
+      - "-ignore='Path .idea'"
+      - "-ignore='Path .git'"
+      - "-ignore='Path .docker-sync'"

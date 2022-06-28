@@ -2,10 +2,8 @@
 
 namespace Roots\Sage\Template;
 
-use Illuminate\Contracts\Container\Container as ContainerContract;
 use Illuminate\Contracts\View\Factory as FactoryContract;
 use Illuminate\View\Engines\CompilerEngine;
-use Illuminate\View\Engines\EngineInterface;
 use Illuminate\View\ViewFinderInterface;
 
 /**
@@ -23,7 +21,6 @@ use Illuminate\View\ViewFinderInterface;
  */
 class Blade
 {
-    /** @var Factory */
     protected $env;
 
     public function __construct(FactoryContract $env)
@@ -35,39 +32,41 @@ class Blade
      * Get the compiler
      *
      * @return \Illuminate\View\Compilers\BladeCompiler
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function compiler()
+    public function compiler(): \Illuminate\View\Compilers\BladeCompiler
     {
         static $engineResolver;
         if (!$engineResolver) {
             $engineResolver = $this->getContainer()->make('view.engine.resolver');
         }
+
         return $engineResolver->resolve('blade')->getCompiler();
     }
 
     /**
-     * @param string $view
-     * @param array  $data
-     * @param array  $mergeData
+     * @param  string  $view
+     * @param  array  $data
+     * @param  array  $mergeData
      * @return string
      */
-    public function render($view, $data = [], $mergeData = [])
+    public function render($view, $data = [], $mergeData = []): string
     {
         /** @var \Illuminate\Contracts\Filesystem\Filesystem $filesystem */
         $filesystem = $this->getContainer()['files'];
+
         return $this->{$filesystem->exists($view) ? 'file' : 'make'}($view, $data, $mergeData)->render();
     }
 
     /**
-     * @param string $file
-     * @param array  $data
-     * @param array  $mergeData
+     * @param  string  $file
+     * @param  array  $data
+     * @param  array  $mergeData
      * @return string
      */
     public function compiledPath($file, $data = [], $mergeData = [])
     {
         $rendered = $this->file($file, $data, $mergeData);
-        /** @var EngineInterface $engine */
         $engine = $rendered->getEngine();
 
         if (!($engine instanceof CompilerEngine)) {
@@ -80,14 +79,15 @@ class Blade
         if ($compiler->isExpired($compiledPath)) {
             $compiler->compile($file);
         }
+
         return $compiledPath;
     }
 
     /**
-     * @param string $file
+     * @param  string  $file
      * @return string
      */
-    public function normalizeViewPath($file)
+    public function normalizeViewPath($file): string
     {
         // Convert `\` to `/`
         $view = str_replace('\\', '/', $file);
@@ -108,10 +108,10 @@ class Blade
     /**
      * Convert path to view namespace
      *
-     * @param string $path
+     * @param  string  $path
      * @return string
      */
-    public function applyNamespaceToPath($path)
+    public function applyNamespaceToPath($path): string
     {
         /** @var ViewFinderInterface $finder */
         $finder = $this->getContainer()['view.finder'];
@@ -123,13 +123,14 @@ class Blade
         $view = array_reduce(array_keys($hints), function ($view, $namespace) use ($delimiter, $hints) {
             return str_replace($hints[$namespace], $namespace.$delimiter, $view);
         }, $path);
+
         return preg_replace("%{$delimiter}[\\/]*%", $delimiter, $view);
     }
 
     /**
      * Pass any method to the view Factory instance.
      *
-     * @param  string $method
+     * @param  string  $method
      * @param  array  $params
      * @return mixed
      */

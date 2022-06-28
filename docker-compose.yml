@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: ./docker/app
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+      - ~/.ssh:/home/application/.ssh
+      - ~/.composer/auth.json:/home/application/.composer/auth.json
+    working_dir: /app
+    restart: unless-stopped
+    environment:
+      PHP_MEMORY_LIMIT: 1G
