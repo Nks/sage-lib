@@ -28,7 +28,7 @@
     }
   },
   "require": {
-    "php": "^7.4",
+    "php": "^8.0",
     "composer/installers": "~2.0",
     "illuminate/view": "^8.0",
     "illuminate/config": "^8.0",
